@@ -1,5 +1,6 @@
 vendor
 main
+anemiq
 *.exe
 *.dll
 *.so
