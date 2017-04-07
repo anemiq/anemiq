@@ -1,0 +1,8 @@
+vendor
+main
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
