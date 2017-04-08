@@ -3,6 +3,8 @@ package config
 import (
 	"strings"
 	"testing"
+
+	"github.com/anemiq/test"
 )
 
 func TestDefaultConfigFileIsMissing(t *testing.T) {
@@ -21,14 +23,9 @@ func TestMalformedConfigFile(t *testing.T) {
 
 func TestConfigFileIsReadenProperly(t *testing.T) {
 	conf, _ := read("./testdata/anemiq.yaml")
-	assertEqual(t, conf.Conn.Host, "localhost")
-	assertEqual(t, conf.Conn.Port, "3306")
-	assertEqual(t, conf.Conn.User, "anemiq")
-	assertEqual(t, conf.Conn.Pass, "1234")
-}
-
-func assertEqual(t *testing.T, a interface{}, b interface{}) {
-	if a != b {
-		t.Fatal()
-	}
+	test.AssertEqual(t, conf.Conn.Host, "localhost")
+	test.AssertEqual(t, conf.Conn.Port, "3306")
+	test.AssertEqual(t, conf.Conn.Database, "mydb")
+	test.AssertEqual(t, conf.Conn.User, "anemiq")
+	test.AssertEqual(t, conf.Conn.Pass, "1234")
 }

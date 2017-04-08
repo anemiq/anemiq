@@ -14,10 +14,11 @@ type Config struct {
 }
 
 type Conn struct {
-	Host string
-	Port string
-	User string
-	Pass string
+	Host     string
+	Port     string
+	Database string
+	User     string
+	Pass     string
 }
 
 //Read configuration from yaml file. First command-line argument
