@@ -11,7 +11,7 @@ type Table struct {
 }
 
 type Column struct {
-	Name string
+	Name    string
 	ColType *graphql.Scalar
 }
 
@@ -44,9 +44,11 @@ func newColumn(name, colTypeStr string) Column {
 func buildGraphQlType(colType string) *graphql.Scalar {
 	if isChar(colType) {
 		return graphql.String
-	} else if isInt(colType) {
+	}
+	if isInt(colType) {
 		return graphql.Int
-	} else if isFloat(colType) {
+	}
+	if isFloat(colType) {
 		return graphql.Float
 	}
 	return nil
@@ -63,7 +65,7 @@ func isInt(colType string) bool {
 
 func isFloat(colType string) bool {
 	colTypeUpper := strings.ToUpper(colType)
-	return strings.Contains(colTypeUpper, "DEC") ||  strings.Contains(colTypeUpper, "FIXED") || 
-		strings.Contains(colTypeUpper, "NUMERIC") || strings.Contains(colTypeUpper, "FLOAT") || 
+	return strings.Contains(colTypeUpper, "DEC") || strings.Contains(colTypeUpper, "FIXED") ||
+		strings.Contains(colTypeUpper, "NUMERIC") || strings.Contains(colTypeUpper, "FLOAT") ||
 		strings.Contains(colTypeUpper, "DOUBLE")
 }

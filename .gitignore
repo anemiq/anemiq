@@ -8,3 +8,4 @@ anemiq
 *.test
 *.out
 .DS_Store
+anemiq_test.yaml
