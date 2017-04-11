@@ -4,24 +4,28 @@ import (
 	"fmt"
 
 	"github.com/anemiq/config"
+	"database/sql"
+
 )
 
-type Database interface {
-	Table(name string) Table
+type Database struct {
+	db *sql.DB
 }
 
-type Table struct {
-	Name string
-	Cols []Column
-}
-
-type Column struct {
-	Name string
-	Type string
+func (self *Database) Table(name string) (*Table, error) {
+	return newTable(self, name)
 }
 
 func Open(conn config.Conn) (*Database, error) {
-	panic("not implemented yet")
+	db, err := sql.Open("mysql", buildDataSourceName(conn))
+	if err != nil {
+		return nil, err
+	}
+	return &Database{db}, nil
+}
+
+func (self *Database) Close() {
+	self.db.Close()
 }
 
 func buildDataSourceName(conn config.Conn) string {
