@@ -5,7 +5,8 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-func SchemaForTables(db *database.Database, tables []*database.Table) graphql.Schema {
+//ForTables returns GraphQL schema for given tables
+func ForTables(db *database.Database, tables []*database.Table) graphql.Schema {
 	rootQueryFields := graphql.Fields{}
 	for _, table := range tables {
 		rootQueryFields[table.Name] = buildTableField(table, buildTableType(table))
