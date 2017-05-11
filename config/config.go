@@ -10,7 +10,8 @@ import (
 )
 
 type Config struct {
-	Conn Conn
+	Conn   Conn
+	Tables Tables
 }
 
 type Conn struct {
@@ -20,6 +21,8 @@ type Conn struct {
 	User     string
 	Pass     string
 }
+
+type Tables []string
 
 //Read configuration from yaml file. First command-line argument
 //indicates the file path. Default config file is ./anemiq.yaml
