@@ -1,7 +1,7 @@
 package schema
 
 import (
-	"github.com/anemiq/database"
+	"github.com/anemiq/anemiq/database"
 	"github.com/graphql-go/graphql"
 )
 

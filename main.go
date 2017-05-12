@@ -8,9 +8,9 @@ import (
 
 	"io/ioutil"
 
-	"github.com/anemiq/config"
-	"github.com/anemiq/database"
-	"github.com/anemiq/schema"
+	"github.com/anemiq/anemiq/config"
+	"github.com/anemiq/anemiq/database"
+	"github.com/anemiq/anemiq/schema"
 	"github.com/graphql-go/graphql"
 )
 

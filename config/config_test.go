@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/anemiq/test"
+	"github.com/anemiq/anemiq/test"
 )
 
 func TestDefaultConfigFileIsMissing(t *testing.T) {

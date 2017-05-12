@@ -3,9 +3,9 @@ package database
 import (
 	"fmt"
 
-	"github.com/anemiq/config"
 	"database/sql"
 
+	"github.com/anemiq/anemiq/config"
 )
 
 type Database struct {
