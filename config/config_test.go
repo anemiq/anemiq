@@ -28,6 +28,7 @@ func TestConfigFileIsReadenProperly(t *testing.T) {
 	test.AssertEqual(t, conf.Database.Name, "mydb")
 	test.AssertEqual(t, conf.Database.User, "anemiq")
 	test.AssertEqual(t, conf.Database.Pass, "1234")
+	test.AssertEqual(t, conf.Server.Port, "9000")
 }
 
 func TestTablesAreReadenProperly(t *testing.T) {

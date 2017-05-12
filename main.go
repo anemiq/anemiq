@@ -12,6 +12,8 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
+const DEFAULT_SERVER_PORT = "8080"
+
 func main() {
 
 	//Read configuration
@@ -75,7 +77,7 @@ func main() {
 
 	port := conf.Server.Port
 	if port == "" {
-		port = "8080"
+		port = DEFAULT_SERVER_PORT
 	}
 
 	http.ListenAndServe(":"+port, nil)
