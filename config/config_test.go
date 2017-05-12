@@ -23,11 +23,11 @@ func TestMalformedConfigFile(t *testing.T) {
 
 func TestConfigFileIsReadenProperly(t *testing.T) {
 	conf, _ := read("./testdata/anemiq.yaml")
-	test.AssertEqual(t, conf.Conn.Host, "localhost")
-	test.AssertEqual(t, conf.Conn.Port, "3306")
-	test.AssertEqual(t, conf.Conn.Database, "mydb")
-	test.AssertEqual(t, conf.Conn.User, "anemiq")
-	test.AssertEqual(t, conf.Conn.Pass, "1234")
+	test.AssertEqual(t, conf.Database.Host, "localhost")
+	test.AssertEqual(t, conf.Database.Port, "3306")
+	test.AssertEqual(t, conf.Database.Name, "mydb")
+	test.AssertEqual(t, conf.Database.User, "anemiq")
+	test.AssertEqual(t, conf.Database.Pass, "1234")
 }
 
 func TestTablesAreReadenProperly(t *testing.T) {

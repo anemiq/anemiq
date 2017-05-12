@@ -1,6 +1,6 @@
-conn: 
+database: 
   host: localhost
   port: 3306
-  database: mydb
+  name: mydb
   user: anemiq
   pass: 1234
