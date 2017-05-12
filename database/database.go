@@ -12,8 +12,16 @@ type Database struct {
 	db *sql.DB
 }
 
-func (self *Database) Table(name string) (*Table, error) {
-	return newTable(self, name)
+func (self *Database) Tables(tablesNames []string) ([]*Table, error) {
+	tables := []*Table{}
+	for _, tableName := range tablesNames {
+		table, err := self.table(tableName)
+		if err != nil {
+			return []*Table{}, err
+		}
+		tables = append(tables, table)
+	}
+	return tables, nil
 }
 
 func Open(conn config.DatabaseConn) (*Database, error) {
@@ -26,6 +34,10 @@ func Open(conn config.DatabaseConn) (*Database, error) {
 
 func (self *Database) Close() {
 	self.db.Close()
+}
+
+func (self *Database) table(name string) (*Table, error) {
+	return newTable(self, name)
 }
 
 func buildDataSourceName(conn config.DatabaseConn) string {

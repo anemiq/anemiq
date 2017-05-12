@@ -2,9 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
-	"os"
 
 	"io/ioutil"
 
@@ -19,21 +17,20 @@ func main() {
 	//Read configuration
 	conf, err := config.Read()
 	if err != nil {
-		fatal(err)
+		panic(err)
 	}
 
 	//Open database
 	db, err := database.Open(conf.Database)
 	if err != nil {
-		fatal(err)
+		panic(err)
 	}
 	defer db.Close()
 
 	//Collect tables
-	tables := []*database.Table{}
-	for _, tableName := range conf.Tables {
-		table, _ := db.Table(tableName)
-		tables = append(tables, table)
+	tables, err := db.Tables(conf.Tables)
+	if err != nil {
+		panic(err)
 	}
 
 	//Generate GraphQL schema
@@ -82,9 +79,4 @@ func main() {
 	}
 
 	http.ListenAndServe(":"+port, nil)
-}
-
-func fatal(err error) {
-	log.Fatal(err.Error())
-	os.Exit(1)
 }
