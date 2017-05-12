@@ -14,7 +14,7 @@ func ForTables(tables []*database.Table) graphql.Schema {
 
 	schema, err := graphql.NewSchema(graphql.SchemaConfig{
 		Query: graphql.NewObject(graphql.ObjectConfig{
-			Name:   "RootQuery",
+			Name:   "rootQuery",
 			Fields: rootQueryFields,
 		}),
 	})
@@ -39,11 +39,29 @@ func buildTableType(t *database.Table) graphql.Type {
 	})
 }
 
-func buildTableField(table *database.Table, tableType graphql.Type) *graphql.Field {
+func buildTableField(t *database.Table, tableType graphql.Type) *graphql.Field {
+	args := graphql.FieldConfigArgument{}
+	for _, col := range t.Cols {
+		args[col.Name] = &graphql.ArgumentConfig{
+			Type:        col.ColType,
+			Description: col.Name,
+		}
+	}
 	return &graphql.Field{
 		Type: graphql.NewList(tableType),
 		Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-			return table.SelectAll(), nil
+			if shouldFilter(p) {
+				return t.SelectWhere(p.Args)
+			}
+			return t.SelectAll()
 		},
+		Args: args,
 	}
+}
+
+func shouldFilter(p graphql.ResolveParams) bool {
+	for _ = range p.Args {
+		return true
+	}
+	return false
 }

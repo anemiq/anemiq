@@ -1,6 +1,8 @@
 package database
 
 import (
+	"fmt"
+
 	"github.com/anemiq/anemiq/gqltype"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/graphql-go/graphql"
@@ -12,11 +14,55 @@ type Table struct {
 	Cols []Column
 }
 
-func (t *Table) SelectAll() interface{} {
+func (t *Table) SelectWhere(params map[string]interface{}) (interface{}, error) {
+	sql := "select * from " + t.Name + " where "
+	numParams := len(params)
+	i := 0
+	for k, v := range params {
+		sql = sql + k + "=" + fmt.Sprintf("\"%v\"", v)
+		if i < (numParams - 1) {
+			sql = sql + " and "
+		}
+		i++
+	}
+	fmt.Print(sql)
+	return t.query(sql)
+}
 
-	rows, err := t.Db.db.Query("select * from " + t.Name)
+func (t *Table) SelectAll() (interface{}, error) {
+	return t.query("select * from " + t.Name)
+}
+
+type Column struct {
+	Name    string
+	ColType *graphql.Scalar
+}
+
+func newTable(db *Database, name string) (*Table, error) {
+	rows, err := db.db.Query("DESCRIBE " + name)
 	if err != nil {
-		panic(err)
+		return nil, err
+	}
+
+	var field, colType, allowNull, key, isDefault, extra string
+	var cols []Column
+
+	for rows.Next() {
+		rows.Scan(&field, &colType, &allowNull, &key, &isDefault, &extra)
+		col := newColumn(field, colType)
+		cols = append(cols, col)
+	}
+	return &Table{db, name, cols}, nil
+}
+
+func newColumn(name, colTypeStr string) Column {
+	return Column{name, gqltype.FromColType(colTypeStr)}
+}
+
+func (t *Table) query(sql string) (interface{}, error) {
+	rows, err := t.Db.db.Query(sql)
+	if err != nil {
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -44,31 +90,5 @@ func (t *Table) SelectAll() interface{} {
 		registers = append(registers, m)
 
 	}
-	return registers
-}
-
-type Column struct {
-	Name    string
-	ColType *graphql.Scalar
-}
-
-func newTable(db *Database, name string) (*Table, error) {
-	rows, err := db.db.Query("DESCRIBE " + name)
-	if err != nil {
-		return nil, err
-	}
-
-	var field, colType, allowNull, key, isDefault, extra string
-	var cols []Column
-
-	for rows.Next() {
-		rows.Scan(&field, &colType, &allowNull, &key, &isDefault, &extra)
-		col := newColumn(field, colType)
-		cols = append(cols, col)
-	}
-	return &Table{db, name, cols}, nil
-}
-
-func newColumn(name, colTypeStr string) Column {
-	return Column{name, gqltype.FromColType(colTypeStr)}
+	return registers, nil
 }
