@@ -5,7 +5,7 @@ import (
 
 	"github.com/anemiq/anemiq/config"
 	"github.com/anemiq/anemiq/test"
-	"github.com/anemiq/graphql-go/graphql"
+	"github.com/graphql-go/graphql"
 )
 
 func TestBuildDataSourceName(t *testing.T) {
