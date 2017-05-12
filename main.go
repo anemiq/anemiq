@@ -23,7 +23,7 @@ func main() {
 	}
 
 	//Open database
-	db, err := database.Open(conf.Conn)
+	db, err := database.Open(conf.Database)
 	if err != nil {
 		fatal(err)
 	}

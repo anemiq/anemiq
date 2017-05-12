@@ -10,16 +10,16 @@ import (
 )
 
 type Config struct {
-	Conn   Conn
-	Tables Tables
+	Database DatabaseConn
+	Tables   Tables
 }
 
-type Conn struct {
-	Host     string
-	Port     string
-	Database string
-	User     string
-	Pass     string
+type DatabaseConn struct {
+	Host string
+	Port string
+	Name string
+	User string
+	Pass string
 }
 
 type Tables []string
