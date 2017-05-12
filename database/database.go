@@ -13,13 +13,13 @@ type Database struct {
 }
 
 func (self *Database) Tables(tablesNames []string) ([]*Table, error) {
-	tables := []*Table{}
-	for _, tableName := range tablesNames {
+	tables := make([]*Table, len(tablesNames))
+	for i, tableName := range tablesNames {
 		table, err := self.table(tableName)
 		if err != nil {
-			return []*Table{}, err
+			return nil, err
 		}
-		tables = append(tables, table)
+		tables[i] = table
 	}
 	return tables, nil
 }
