@@ -76,8 +76,12 @@ func main() {
 		json.NewEncoder(w).Encode(result)
 	})
 
-	http.ListenAndServe(":8080", nil)
+	port := conf.Server.Port
+	if port == "" {
+		port = "8080"
+	}
 
+	http.ListenAndServe(":"+port, nil)
 }
 
 func fatal(err error) {

@@ -10,8 +10,13 @@ import (
 )
 
 type Config struct {
+	Server   Server
 	Database DatabaseConn
 	Tables   Tables
+}
+
+type Server struct {
+	Port string
 }
 
 type DatabaseConn struct {
