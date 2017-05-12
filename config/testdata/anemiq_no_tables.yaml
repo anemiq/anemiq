@@ -4,7 +4,3 @@ conn:
   database: mydb
   user: anemiq
   pass: 1234
-
-tables:
-  - users
-  - orders

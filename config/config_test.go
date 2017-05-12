@@ -29,3 +29,14 @@ func TestConfigFileIsReadenProperly(t *testing.T) {
 	test.AssertEqual(t, conf.Conn.User, "anemiq")
 	test.AssertEqual(t, conf.Conn.Pass, "1234")
 }
+
+func TestTablesAreReadenProperly(t *testing.T) {
+	conf, _ := read("./testdata/anemiq.yaml")
+	test.AssertEqual(t, conf.Tables[0], "users")
+	test.AssertEqual(t, conf.Tables[1], "orders")
+}
+
+func TestNoTablesToExpose(t *testing.T) {
+	conf, _ := read("./testdata/anemiq_no_tables.yaml")
+	test.AssertEqual(t, len(conf.Tables), 0)
+}
