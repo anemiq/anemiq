@@ -37,7 +37,7 @@ func main() {
 	}
 
 	//Generate GraphQL schema
-	sch := schema.ForTables(db, tables)
+	sch := schema.ForTables(tables)
 
 	//Run server
 	http.HandleFunc("/graphql", func(w http.ResponseWriter, r *http.Request) {
