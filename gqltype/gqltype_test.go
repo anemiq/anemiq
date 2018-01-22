@@ -3,7 +3,7 @@ package gqltype
 import (
 	"testing"
 
-	"github.com/anemiq/anemiq/test"
+	"github.com/anemiq/test"
 	"github.com/graphql-go/graphql"
 )
 

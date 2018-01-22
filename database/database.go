@@ -5,7 +5,7 @@ import (
 
 	"database/sql"
 
-	"github.com/anemiq/anemiq/config"
+	"github.com/anemiq/config"
 )
 
 type Database struct {

@@ -1,11 +1,10 @@
 package schema
 
 import (
-	"github.com/anemiq/anemiq/database"
+	"github.com/anemiq/database"
 	"github.com/graphql-go/graphql"
 )
 
-//ForTables returns GraphQL schema for given tables
 func ForTables(tables []*database.Table) graphql.Schema {
 	rootQueryFields := graphql.Fields{}
 	for _, table := range tables {

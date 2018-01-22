@@ -1,33 +1,36 @@
 package main
 
 import (
-	"encoding/json"
-	"net/http"
+	"fmt"
+	"os"
 
-	"io/ioutil"
-
-	"github.com/anemiq/anemiq/config"
-	"github.com/anemiq/anemiq/database"
-	"github.com/anemiq/anemiq/schema"
-	"github.com/graphql-go/graphql"
+	"github.com/anemiq/config"
+	"github.com/anemiq/database"
+	"github.com/anemiq/schema"
+	"github.com/anemiq/server"
 )
 
-const DEFAULT_SERVER_PORT = "8080"
+func log(msg string) {
+	fmt.Printf(msg + "\n")
+}
 
 func main() {
 
-	//Read configuration
+	log("reading config from anemiq.yml...")
 	conf, err := config.Read()
 	if err != nil {
-		panic(err)
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
 	}
+	log("done!")
 
-	//Open database
+	log("connecting to database...")
 	db, err := database.Open(conf.Database)
 	if err != nil {
 		panic(err)
 	}
 	defer db.Close()
+	log("done!")
 
 	//Collect tables
 	tables, err := db.Tables(conf.Tables)
@@ -38,47 +41,7 @@ func main() {
 	//Generate GraphQL schema
 	sch := schema.ForTables(tables)
 
-	//Run server
-	http.HandleFunc("/graphql", func(w http.ResponseWriter, r *http.Request) {
-
-		if r.Method != "POST" {
-			w.WriteHeader(http.StatusMethodNotAllowed)
-			return
-		}
-
-		if r.Header.Get("Content-Type") != "application/json" {
-			w.WriteHeader(http.StatusUnsupportedMediaType)
-			return
-		}
-
-		//Get query body
-		//TODO improve error responses
-		query, err := ioutil.ReadAll(r.Body)
-		defer r.Body.Close()
-		if err != nil {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-		if len(query) == 0 {
-			w.WriteHeader(http.StatusBadRequest)
-			return
-		}
-
-		//Perform query
-		params := graphql.Params{
-			Schema:        sch,
-			RequestString: string(query),
-		}
-		result := graphql.Do(params)
-
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(result)
-	})
-
-	port := conf.Server.Port
-	if port == "" {
-		port = DEFAULT_SERVER_PORT
-	}
-
-	http.ListenAndServe(":"+port, nil)
+	sv := server.New(conf, sch)
+	log("server started at http://localhost:" + conf.Server.Port + "/graphql")
+	sv.Start()
 }

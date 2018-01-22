@@ -3,7 +3,7 @@ package database
 import (
 	"fmt"
 
-	"github.com/anemiq/anemiq/gqltype"
+	"github.com/anemiq/gqltype"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/graphql-go/graphql"
 )
@@ -25,7 +25,6 @@ func (t *Table) SelectWhere(params map[string]interface{}) (interface{}, error) 
 		}
 		i++
 	}
-	fmt.Print(sql)
 	return t.query(sql)
 }
 

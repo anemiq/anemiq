@@ -6,7 +6,6 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-//FromColType returns the GraphQL type associated with the database type
 func FromColType(colType string) *graphql.Scalar {
 	if isChar(colType) || isDate(colType) {
 		return graphql.String

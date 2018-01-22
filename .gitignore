@@ -1,4 +1,3 @@
-_test.go
 vendor
 main
 anemiq
@@ -9,4 +8,5 @@ anemiq
 *.test
 *.out
 .DS_Store
-anemiq_test.yaml
+anemiq.yml
+*.lock

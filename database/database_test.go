@@ -3,8 +3,8 @@ package database
 import (
 	"testing"
 
-	"github.com/anemiq/anemiq/config"
-	"github.com/anemiq/anemiq/test"
+	"github.com/anemiq/config"
+	"github.com/anemiq/test"
 )
 
 func TestBuildDataSourceName(t *testing.T) {
